@@ -11,6 +11,7 @@ public class SpawnManager : MonoBehaviour
     float speed = 0;
     int waveNumber = 0;
     public int buzzsawCount = 0;
+    public GameObject buzzsawPrefab;
     public enum GameState
     {
         Menu, // Press X to Start

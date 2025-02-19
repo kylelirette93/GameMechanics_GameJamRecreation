@@ -490,9 +490,12 @@ MonoBehaviour:
   waves:
   - {fileID: 9035065103497059327, guid: 86d5c7e480e67b64a851b3635f3cd7db, type: 3}
   - {fileID: 9035065103497059327, guid: b029cccdcc4d5a7429376524e53a39e6, type: 3}
+  - {fileID: 9035065103497059327, guid: 26a1d215c0f365641a0aa25a102077b0, type: 3}
+  - {fileID: 9035065103497059327, guid: 6ebda84c5e31c1b4f950cd0a0fdb1e6f, type: 3}
   player: {fileID: 1641394154}
   spawnPoint: {fileID: 1083656975}
   buzzsawCount: 1
+  buzzsawPrefab: {fileID: 0}
 --- !u!4 &1635703698
 Transform:
   m_ObjectHideFlags: 0
