@@ -38,7 +38,7 @@ public class PlayerMovement : MonoBehaviour
     void MovePlayer()
     {
         // Move the player using rigidbody position and velocity scaled.
-        rb2D.MovePosition(rb2D.position + moveVector * moveSpeed * Time.fixedDeltaTime);
+        rb2D.MovePosition(rb2D.position + moveVector * moveSpeed * Time.deltaTime);
     }
 
     void GetInputVector(Vector2 inputDirection)
@@ -53,6 +53,20 @@ public class PlayerMovement : MonoBehaviour
         {
             // No input, stay idle.
             moveVector = Vector2.zero;
+        }
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Buzzsaw"))
+        {
+            // Reset the player position.
+            Actions.ResetPlayer?.Invoke();
+        }
+        else if (collision.gameObject.CompareTag("Goal"))
+        {
+            // Reset the player position.
+            Actions.NextWave?.Invoke();
         }
     }
 }

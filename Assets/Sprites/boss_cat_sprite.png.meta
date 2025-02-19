@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 4523bdb8b68fdfc46b2a0c40443791ec
+guid: 54e17bc86b1e48744a11d861d28d0941
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -93,11 +93,24 @@ TextureImporter:
     ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: buzz_saw_0
+      name: boss_cat_sprite_0
       rect:
         serializedVersion: 2
         x: 0
@@ -111,71 +124,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 9bf2d4869460c1b48ba5e02f6bd15649
-      internalID: 929899650
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: buzz_saw_1
-      rect:
-        serializedVersion: 2
-        x: 16
-        y: 0
-        width: 16
-        height: 16
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: bc799b2208a079c4fb12e66ee9dd8dea
-      internalID: -488622958
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: buzz_saw_2
-      rect:
-        serializedVersion: 2
-        x: 32
-        y: 0
-        width: 16
-        height: 16
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 4b6fd2a9465a16342923aa648d7fb27c
-      internalID: -1243363982
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: buzz_saw_3
-      rect:
-        serializedVersion: 2
-        x: 48
-        y: 0
-        width: 16
-        height: 16
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: c5fa4c99a2e267449ae5e6e8a1872900
-      internalID: 2012877729
+      spriteID: 81cca8da1f8c707428e1163fdaaa56f5
+      internalID: 629847526
       vertices: []
       indices: 
       edges: []
@@ -191,10 +141,7 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      buzz_saw_0: 929899650
-      buzz_saw_1: -488622958
-      buzz_saw_2: -1243363982
-      buzz_saw_3: 2012877729
+      boss_cat_sprite_0: 629847526
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

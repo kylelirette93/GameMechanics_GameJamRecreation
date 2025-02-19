@@ -49,4 +49,6 @@ public static class Actions
     public static Action<Vector2> MoveEvent;
     public static Action StartInteractEvent;
     public static Action CancelInteractEvent;
+    public static Action ResetPlayer;
+    public static Action NextWave;
 }
