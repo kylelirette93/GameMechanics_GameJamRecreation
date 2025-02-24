@@ -85,20 +85,21 @@ PrefabInstance:
       propertyPath: m_Name
       value: Buzzsaw (1)
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: -8473560420711577655, guid: abc040b8e4209734d84c19094c177c46, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 8785255038101185797, guid: abc040b8e4209734d84c19094c177c46, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 9090387770061377494}
+      addedObject: {fileID: 525305465277859564}
   m_SourcePrefab: {fileID: 100100000, guid: abc040b8e4209734d84c19094c177c46, type: 3}
 --- !u!1 &3716378765172793901 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 8785255038101185797, guid: abc040b8e4209734d84c19094c177c46, type: 3}
   m_PrefabInstance: {fileID: 5366113872519792424}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &9090387770061377494
+--- !u!114 &525305465277859564
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -107,10 +108,35 @@ MonoBehaviour:
   m_GameObject: {fileID: 3716378765172793901}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f5035132fcf99ea4e8f6105c826c3e26, type: 3}
+  m_Script: {fileID: 11500000, guid: d319c03287592284c871799096427fa3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 7
+  moveSpeed: 2
+  currentState: 2
+  curve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!4 &5061022899523654513 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 883859610009539673, guid: abc040b8e4209734d84c19094c177c46, type: 3}
@@ -180,20 +206,21 @@ PrefabInstance:
       propertyPath: m_Name
       value: Buzzsaw
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: -8473560420711577655, guid: abc040b8e4209734d84c19094c177c46, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 8785255038101185797, guid: abc040b8e4209734d84c19094c177c46, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 3281629491107818005}
+      addedObject: {fileID: 7938136168525813886}
   m_SourcePrefab: {fileID: 100100000, guid: abc040b8e4209734d84c19094c177c46, type: 3}
 --- !u!1 &1795016723362190323 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 8785255038101185797, guid: abc040b8e4209734d84c19094c177c46, type: 3}
   m_PrefabInstance: {fileID: 6990238469919930102}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &3281629491107818005
+--- !u!114 &7938136168525813886
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -202,10 +229,35 @@ MonoBehaviour:
   m_GameObject: {fileID: 1795016723362190323}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a3f0638530d991f40bd8239e125ac768, type: 3}
+  m_Script: {fileID: 11500000, guid: d319c03287592284c871799096427fa3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 5
+  moveSpeed: 2
+  currentState: 1
+  curve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!4 &7874061794811568815 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 883859610009539673, guid: abc040b8e4209734d84c19094c177c46, type: 3}

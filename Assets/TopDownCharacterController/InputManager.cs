@@ -41,12 +41,22 @@ public class InputManager : MonoBehaviour, GameInput.IPlayerActions
             Actions.CancelInteractEvent?.Invoke();
         }
     }
+
+    public void OnDash(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            Debug.Log("Dash performed");
+            Actions.DashEvent?.Invoke();
+        }
+    }
 }
 
 public static class Actions
 {
     // Define events for each action.
     public static Action<Vector2> MoveEvent;
+    public static Action DashEvent;
     public static Action StartInteractEvent;
     public static Action CancelInteractEvent;
     public static Action ResetPlayer;

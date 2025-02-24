@@ -1,14 +1,10 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.EventSystems;
-using UnityEngine.InputSystem;
+using UnityEngine.Rendering;
+
 
 public class PlayerMovement : MonoBehaviour
 {
-    // Reference to character controller.
+    // Reference to rigidbody component.
     Rigidbody2D rb2D;
 
     // Initialize input vector.
@@ -17,6 +13,12 @@ public class PlayerMovement : MonoBehaviour
 
     // Movement speed of the player.
     [SerializeField] float moveSpeed = 2.0f;
+    float newSpeed;
+
+    [SerializeField] float dashSpeed = 20.0f;
+    float dashDuration = 0.2f;
+    float dashTime = 0f;
+    Vector2 dashDirection;
 
     // Reference to the animator component.
     Animator animator;
@@ -28,6 +30,7 @@ public class PlayerMovement : MonoBehaviour
 
         // Subscribe to the move event.
         Actions.MoveEvent += GetInputVector;
+        Actions.DashEvent += Dash;
     }
 
     private void FixedUpdate()
@@ -35,10 +38,27 @@ public class PlayerMovement : MonoBehaviour
         MovePlayer();
     }
 
+    private void Update()
+    {
+        dashTime -= Time.deltaTime;
+        if (dashTime <= 0)
+        {
+            newSpeed = moveSpeed;
+        }
+    }
+
+
+    void Dash()
+    {
+        dashTime = dashDuration;
+        dashDirection = lastMoveVector;
+        newSpeed = dashSpeed;
+    }
+
     void MovePlayer()
     {
         // Move the player using rigidbody position and velocity scaled.
-        rb2D.MovePosition(rb2D.position + moveVector * moveSpeed * Time.deltaTime);
+        rb2D.MovePosition(rb2D.position + moveVector * newSpeed * Time.deltaTime);
     }
 
     void GetInputVector(Vector2 inputDirection)
