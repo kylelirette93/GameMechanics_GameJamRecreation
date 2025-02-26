@@ -5,7 +5,6 @@ using UnityEngine;
 public class AudioManager : MonoBehaviour
 {
     private AudioSource audioSource;
-    public AudioClip introMusic;
     public AudioClip gameplayMusic;
 
     private void Start()
@@ -16,7 +15,8 @@ public class AudioManager : MonoBehaviour
     public void PlayAudio(AudioClip clip)
     {
         audioSource.clip = clip;
-        audioSource.loop = false;
+        audioSource.loop = true;
         audioSource.Play();
+        
     }
 }
