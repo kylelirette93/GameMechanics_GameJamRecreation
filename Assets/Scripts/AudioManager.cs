@@ -6,6 +6,7 @@ public class AudioManager : MonoBehaviour
 {
     private AudioSource audioSource;
     public AudioClip gameplayMusic;
+    public AudioClip impact;
 
     private void Start()
     {
@@ -16,7 +17,11 @@ public class AudioManager : MonoBehaviour
     {
         audioSource.clip = clip;
         audioSource.loop = true;
-        audioSource.Play();
-        
+        audioSource.Play();      
+    }
+
+    public void PlayOneShot(AudioClip clip)
+    {
+        audioSource.PlayOneShot(clip);
     }
 }

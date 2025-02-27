@@ -21,12 +21,14 @@ public class PlayerController : MonoBehaviour
 
     Camera mainCamera;
     Animator animator;
+    ParticleSystem particleSystem;
 
     private void Awake()
     {
         rb2D = GetComponent<Rigidbody2D>();
         mainCamera = Camera.main;
         animator = GetComponentInChildren<Animator>();
+        particleSystem = GetComponentInChildren<ParticleSystem>();
 
         // Subscribe to the move event.
         Actions.MoveEvent += GetInputVector;
@@ -106,6 +108,8 @@ public class PlayerController : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Buzzsaw"))
         {
+            GameManager.instance.audioManager.PlayOneShot(GameManager.instance.audioManager.impact);
+            particleSystem.Play();
             // Reset the player position.
             Actions.ResetPlayer?.Invoke();
         }

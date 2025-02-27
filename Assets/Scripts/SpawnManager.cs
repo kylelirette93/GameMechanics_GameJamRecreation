@@ -1,6 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
+using System.Collections;
 
 public class SpawnManager : MonoBehaviour
 {
@@ -8,33 +8,42 @@ public class SpawnManager : MonoBehaviour
     public GameObject player;
     private GameObject waveInstance;
     public Transform spawnPoint;
-    float speed = 0;
-    public int WaveNumber { get {  return waveNumber; } }
+    public int WaveNumber { get { return waveNumber; } }
     int waveNumber = 0;
     public int buzzsawCount = 0;
-    public GameObject buzzsawPrefab;
-   
+    private float tweenFactor = 1f;
+    Quaternion originalRotation;
 
     private void OnEnable()
     {
+        originalRotation = transform.rotation;
         Actions.ResetPlayer += ResetPlayer;
         Actions.NextWave += NextWave;
     }
-    
+
     void NextWave()
     {
         // Start the next wave.
-        ResetPlayer();
+        StartCoroutine(HandleNextWave());
+    }
+
+    IEnumerator HandleNextWave()
+    {
+        // Clear the current wave.
+        if (waveNumber > 0)
+        {
+            Destroy(waveInstance);
+        }
+
+        // Reset the player.
+        yield return ResetPlayerCoroutine();
+
+        // Start the next wave.
         if (waveNumber < waves.Length)
         {
-            if (waveNumber > 0)
-            {
-                Destroy(waveInstance);
-            }
             waveInstance = Instantiate(waves[waveNumber], new Vector2(0, 0), Quaternion.identity);
             waveNumber++;
             Debug.Log("Starting wave: " + waveNumber);
-
         }
         else
         {
@@ -42,10 +51,17 @@ public class SpawnManager : MonoBehaviour
         }
     }
 
+    IEnumerator ResetPlayerCoroutine()
+    {
+        // Reset player if they hit a buzzsaw.
+        player.transform.DOMove(spawnPoint.position, tweenFactor);
+        yield return player.transform.DOShakeRotation(tweenFactor).WaitForCompletion();
+        player.transform.rotation = originalRotation;
+    }
 
     public void ResetPlayer()
     {
         // Reset player if they hit a buzzsaw.
-        player.transform.position = spawnPoint.position;
+        StartCoroutine(ResetPlayerCoroutine());
     }
 }

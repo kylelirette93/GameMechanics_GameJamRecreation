@@ -7,7 +7,6 @@ public class GameStateManager : MonoBehaviour
 {
     public PlayerController PlayerController;
     public SpawnManager SpawnManager;
-    public AudioManager audioManager;
 
     public GameObject menuPanel;
     public GameObject controlsPanel;
@@ -94,7 +93,7 @@ public class GameStateManager : MonoBehaviour
                 break;
             case GameState.Tutorial:
                 tutorialPanel.SetActive(true);
-                audioManager.PlayAudio(audioManager.gameplayMusic);
+                GameManager.instance.audioManager.PlayAudio(GameManager.instance.audioManager.gameplayMusic);
                 break;
             case GameState.Gameplay:
                 // Enter Gameplay
