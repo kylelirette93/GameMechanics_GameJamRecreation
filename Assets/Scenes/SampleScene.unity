@@ -2073,12 +2073,20 @@ PrefabInstance:
       objectReference: {fileID: 1083656975}
     - target: {fileID: 3894936859857365968, guid: 6d0695c20f2ba8e438ed5d560d01bf8d, type: 3}
       propertyPath: waves.Array.size
-      value: 7
+      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: 3894936859857365968, guid: 6d0695c20f2ba8e438ed5d560d01bf8d, type: 3}
       propertyPath: waves.Array.data[6]
       value: 
       objectReference: {fileID: 9035065103497059327, guid: 9fbc93063c6483340b8ed60a595e4901, type: 3}
+    - target: {fileID: 3894936859857365968, guid: 6d0695c20f2ba8e438ed5d560d01bf8d, type: 3}
+      propertyPath: waves.Array.data[7]
+      value: 
+      objectReference: {fileID: 9035065103497059327, guid: 67eeb255a57b6da439cbe3c92841e55a, type: 3}
+    - target: {fileID: 3894936859857365968, guid: 6d0695c20f2ba8e438ed5d560d01bf8d, type: 3}
+      propertyPath: waves.Array.data[8]
+      value: 
+      objectReference: {fileID: 9035065103497059327, guid: d410225b768721a4e998b9c32ae4989d, type: 3}
     - target: {fileID: 4917165563042284466, guid: 6d0695c20f2ba8e438ed5d560d01bf8d, type: 3}
       propertyPath: m_Name
       value: SpawnManager

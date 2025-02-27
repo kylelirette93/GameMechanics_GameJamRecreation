@@ -7,10 +7,10 @@ public class BuzzsawController : MonoBehaviour
     [SerializeField] float moveSpeed;
     [SerializeField] MovementState currentState;  // Enum to select movement state
 
-    float topOfScreen = 4.5f;
-    float bottomOfScreen = -4.5f;
-    float leftSideOfScreen = -8.5f;
-    float rightSideOfScreen = 8.5f;
+    float topOfScreen = 4.75f;
+    float bottomOfScreen = -4.75f;
+    float leftSideOfScreen = -8.75f;
+    float rightSideOfScreen = 8.75f;
 
     Vector3 centerPosition;
     Vector3 originalPosition;
