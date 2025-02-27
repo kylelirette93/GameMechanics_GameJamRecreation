@@ -19,15 +19,14 @@ public class PlayerController : MonoBehaviour
     float dashTime = 0f;
     Vector2 dashDirection;
 
-    // Reference to the animator component.
-    Animator animator;
     Camera mainCamera;
+    Animator animator;
 
     private void Awake()
     {
         rb2D = GetComponent<Rigidbody2D>();
-        animator = GetComponentInChildren<Animator>();
         mainCamera = Camera.main;
+        animator = GetComponentInChildren<Animator>();
 
         // Subscribe to the move event.
         Actions.MoveEvent += GetInputVector;
@@ -57,6 +56,8 @@ public class PlayerController : MonoBehaviour
 
     void MovePlayer()
     {
+        animator.SetBool("IsMoving", moveVector != Vector2.zero);
+        animator.speed = (moveVector != Vector2.zero) ? 1 : 0;
         Vector2 newPosition = rb2D.position + moveVector * newSpeed * Time.deltaTime;
         newPosition = ClampPositionToCameraBounds(newPosition); // Clamp position
         rb2D.MovePosition(newPosition);
