@@ -11,6 +11,10 @@ public class GameStateManager : MonoBehaviour
     public GameObject menuPanel;
     public GameObject controlsPanel;
     public GameObject tutorialPanel;
+    public GameObject gameplayPanel;
+    public GameObject winPanel;
+    public GameObject gameOverPanel;
+    GameObject goal;
     public enum GameState
     {
         MainMenu,
@@ -18,6 +22,7 @@ public class GameStateManager : MonoBehaviour
         Tutorial,
         Gameplay,
         Boss,
+        GameWin,
         GameOver
     }
 
@@ -27,6 +32,7 @@ public class GameStateManager : MonoBehaviour
     private void Start()
     {
         ChangeState(GameState.MainMenu);
+        goal = GameObject.Find("Goal");
     }
 
     public void ChangeState(GameState newState)
@@ -41,7 +47,9 @@ public class GameStateManager : MonoBehaviour
     {
         if (currentState == GameState.MainMenu && Input.GetKeyDown(KeyCode.X))
         {
-           ChangeState(GameState.Controls);
+            SpawnManager.Reset();
+            PlayerController.Lives = 9;
+            ChangeState(GameState.Controls);
         }
         if (currentState == GameState.Controls && SpawnManager.WaveNumber > 0)
         {
@@ -54,6 +62,26 @@ public class GameStateManager : MonoBehaviour
         else if (currentState == GameState.Gameplay && SpawnManager.WaveNumber > 8)
         {
             ChangeState(GameState.Boss);
+        }
+        else if (currentState == GameState.GameWin && Input.GetKeyDown(KeyCode.M))
+        {
+            SpawnManager.ResetPlayer();
+            ChangeState(GameState.MainMenu);
+
+        }
+        else if (currentState == GameState.GameWin && Input.GetKeyDown(KeyCode.Q))
+        {
+            Application.Quit();
+        }
+        else if (currentState == GameState.GameOver && Input.GetKeyDown(KeyCode.M))
+        {
+            SpawnManager.ResetPlayer();
+            ChangeState(GameState.MainMenu);
+
+        }
+        else if (currentState == GameState.GameOver && Input.GetKeyDown(KeyCode.Q))
+        {
+            Application.Quit();
         }
     }
 
@@ -76,10 +104,14 @@ public class GameStateManager : MonoBehaviour
             case GameState.Gameplay:
                 // Exit Gameplay
                 break;
+            case GameState.GameWin:
+                winPanel.SetActive(false);
+                break;
             case GameState.Boss:
                 break;
-                case GameState.GameOver:
+                case GameState.GameOver:               
                 // Exit GameOver
+                gameOverPanel.SetActive(false);
                 break;
         }
     }
@@ -96,22 +128,38 @@ public class GameStateManager : MonoBehaviour
             case GameState.Controls:
                 controlsPanel.SetActive(true);
                 Time.timeScale = 1;
+                goal.SetActive(true);
                 // Enter Controls
                 break;
             case GameState.Tutorial:
                 tutorialPanel.SetActive(true);
                 GameManager.instance.audioManager.PlayAudio(GameManager.instance.audioManager.gameplayMusic);
+                Timer.instance.StartTimer();
                 break;
             case GameState.Boss:
                 // Enter Boss state
-                Destroy(GameObject.Find("Goal"));
+                goal.SetActive(false);
                 GameManager.instance.audioManager.PlayAudio(GameManager.instance.audioManager.bossMusic);
                 break;
             case GameState.Gameplay:
                 // Enter Gameplay
+                gameplayPanel.SetActive(true);
+                break;
+            case GameState.GameWin:
+                // Enter Game win state.
+                Timer.instance.StopTimer();
+                gameplayPanel.SetActive(false);
+                winPanel.SetActive(true);
+                GameManager.instance.audioManager.StopAudio();
+                Time.timeScale = 0;
                 break;
             case GameState.GameOver:
                 // Enter GameOver
+                Timer.instance.ResetTime();
+                gameplayPanel.SetActive(false);
+                gameOverPanel.SetActive(true);
+                GameManager.instance.audioManager.StopAudio();
+                Time.timeScale = 0;
                 break;
         }
     }

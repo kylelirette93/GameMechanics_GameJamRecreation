@@ -8,13 +8,13 @@ public class AdvanceAIController : MonoBehaviour
     [SerializeField] Transform rightEyeTransform;
     Transform playerTransform;  // Reference to the player's position
     [SerializeField] GameObject laserPrefab;
-    float fireInterval = 0.1f;
+    float fireInterval = 0.15f;
     float laserDuration = 0.5f;
     Animator animator;
     private bool isFiring = false;
     public GameObject bossTargetPickupPrefab;
     float pickupDelay = 5f;
-    int maxPickups = 5;
+    int maxPickups = 50;
     int pickupsSpawned = 0;
 
     private void Start()
@@ -71,7 +71,7 @@ public class AdvanceAIController : MonoBehaviour
         while (pickupsSpawned < maxPickups)
         {
             yield return new WaitForSeconds(pickupDelay);
-            GameObject pickupInstance = GameObject.Instantiate(bossTargetPickupPrefab, transform.position, transform.rotation);
+            GameObject pickupInstance = Instantiate(bossTargetPickupPrefab, new Vector3(4, 4, 4), transform.rotation);
             pickupsSpawned++;
         }
     }

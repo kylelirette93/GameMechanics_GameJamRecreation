@@ -8,14 +8,15 @@ TagManager:
   - Buzzsaw
   - Projectile
   - Boss
+  - Laser
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Player
   - Water
   - UI
-  - 
+  - Enemy
   - 
   - 
   - 

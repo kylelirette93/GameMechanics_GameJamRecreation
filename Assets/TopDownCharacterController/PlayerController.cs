@@ -12,6 +12,9 @@ public class PlayerController : MonoBehaviour
     Vector2 moveVector;
     Vector2 lastMoveVector;
     bool isFacingRight = true;
+    public int Lives { get { return lives; } set { lives = value; } }
+    int lives;
+    public SpawnManager spawnManager;
 
     // Movement speed of the player.
     [Header("Movement Settings")]
@@ -40,6 +43,7 @@ public class PlayerController : MonoBehaviour
         mainCamera = Camera.main;
         animator = GetComponentInChildren<Animator>();
         particleSystem = GetComponentInChildren<ParticleSystem>();
+        lives = 9;
 
         // Subscribe to the events.
         Actions.MoveEvent += GetInputVector;
@@ -58,7 +62,10 @@ public class PlayerController : MonoBehaviour
         {
             newSpeed = moveSpeed;
         }
-        Flip();
+        if (moveVector != Vector2.zero)
+        {
+            Flip();
+        }
     }
 
     void Dash()
@@ -168,12 +175,40 @@ public class PlayerController : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.CompareTag("Buzzsaw"))
+        if (collision.gameObject.CompareTag("Buzzsaw") && !isDashing && spawnManager.IsResetting == false)
+        {
+            if (GameManager.instance.gameStateManager.currentState == GameStateManager.GameState.Gameplay || 
+                GameManager.instance.gameStateManager.currentState == GameStateManager.GameState.Boss)
+            {
+                GameManager.instance.audioManager.PlayOneShot(GameManager.instance.audioManager.impact);
+                particleSystem.Play();
+                // Reset the player position.
+                Actions.ResetPlayer?.Invoke();
+                LoseLife();
+                UpdatePlayerLives();
+                if (lives <= 0)
+                {
+                    GameOver();
+                }
+
+                GameManager.instance.audioManager.PlayOneShot(GameManager.instance.audioManager.impact);
+                particleSystem.Play();
+                // Reset the player position.
+                Actions.ResetPlayer?.Invoke();
+            }
+        }
+        else if (collision.gameObject.CompareTag("Laser") && !isDashing && spawnManager.IsResetting == false)
         {
             GameManager.instance.audioManager.PlayOneShot(GameManager.instance.audioManager.impact);
             particleSystem.Play();
-            // Reset the player position.
             Actions.ResetPlayer?.Invoke();
+            LoseLife();
+            UpdatePlayerLives();
+            if (lives <= 0)
+            {
+                GameOver();
+            }
+            
         }
         else if (collision.gameObject.CompareTag("Goal"))
         {
@@ -182,13 +217,34 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    private void LoseLife()
+    {
+        lives--;
+        Mathf.Clamp(lives, 0, 9);
+    }
+
+    private void UpdatePlayerLives()
+    {
+        GameManager.instance.gameStateManager.gameplayPanel.GetComponentInChildren<LivesUI>().UpdateLives();
+    }
+
+    private void GameOver()
+    {
+        GameManager.instance.gameStateManager.ChangeState(GameStateManager.GameState.GameOver);
+    }
+
     private void Flip()
     {
         if (isDashing) return;
-        if (!isFacingRight && moveVector.x > 0 || isFacingRight && moveVector.x < 0)
+        if (moveVector.x > 0 && !isFacingRight)
         {
-            isFacingRight = !isFacingRight;
-            transform.localScale = new Vector3(transform.localScale.x * -1, transform.localScale.y, transform.localScale.z);
+            isFacingRight = true;
+            transform.localScale = new Vector3(Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
+        }
+        else if (moveVector.x < 0 && isFacingRight)
+        {
+            isFacingRight = false;
+            transform.localScale = new Vector3(-Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
         }
     }
 }

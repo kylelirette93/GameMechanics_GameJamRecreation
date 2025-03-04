@@ -9,6 +9,8 @@ public class SpawnManager : MonoBehaviour
     public GameObject player;
     private GameObject waveInstance;
     public Transform spawnPoint;
+    public bool IsResetting { get { return isResetting; } }
+    bool isResetting = false;
     public int WaveNumber { get { return waveNumber; } }
     int waveNumber = 0;
     public int buzzsawCount = 0;
@@ -26,6 +28,15 @@ public class SpawnManager : MonoBehaviour
     {
         // Start the next wave.
         StartCoroutine(HandleNextWave());
+    }
+
+    private void Update()
+    {
+        if (GameManager.instance.gameStateManager.currentState == GameStateManager.GameState.GameWin ||
+            GameManager.instance.gameStateManager.currentState == GameStateManager.GameState.GameOver)
+        {
+            Destroy(waveInstance);
+        }
     }
 
     IEnumerator HandleNextWave()
@@ -52,12 +63,31 @@ public class SpawnManager : MonoBehaviour
         }
     }
 
+    public void Reset()
+    {
+        // Start back at first wave.
+        waveNumber = 0;
+        DestroyLeftovers();
+    }
+
+    private void DestroyLeftovers()
+    {
+        // Destroy leftover projectiles.
+        GameObject[] projectiles = GameObject.FindGameObjectsWithTag("Projectile");
+        foreach (GameObject projectile in projectiles)
+        {
+            Destroy(projectile);
+        }
+    }
+
     IEnumerator ResetPlayerCoroutine()
     {
+        isResetting = true;
         // Reset player if they hit a buzzsaw.
         player.transform.DOMove(spawnPoint.position, tweenFactor);
         yield return player.transform.DOShakeRotation(tweenFactor).WaitForCompletion();
         player.transform.rotation = originalRotation;
+        isResetting = false;
     }
 
     public void ResetPlayer()
