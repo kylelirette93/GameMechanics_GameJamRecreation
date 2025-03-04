@@ -17,6 +17,7 @@ public class GameStateManager : MonoBehaviour
         Controls,
         Tutorial,
         Gameplay,
+        Boss,
         GameOver
     }
 
@@ -50,6 +51,10 @@ public class GameStateManager : MonoBehaviour
         {
             ChangeState(GameState.Gameplay);
         }
+        else if (currentState == GameState.Gameplay && SpawnManager.WaveNumber > 8)
+        {
+            ChangeState(GameState.Boss);
+        }
     }
 
     private void ExitState(GameState state)
@@ -70,6 +75,8 @@ public class GameStateManager : MonoBehaviour
                 break;
             case GameState.Gameplay:
                 // Exit Gameplay
+                break;
+            case GameState.Boss:
                 break;
                 case GameState.GameOver:
                 // Exit GameOver
@@ -94,6 +101,10 @@ public class GameStateManager : MonoBehaviour
             case GameState.Tutorial:
                 tutorialPanel.SetActive(true);
                 GameManager.instance.audioManager.PlayAudio(GameManager.instance.audioManager.gameplayMusic);
+                break;
+            case GameState.Boss:
+                // Enter Boss state
+                GameManager.instance.audioManager.PlayAudio(GameManager.instance.audioManager.bossMusic);
                 break;
             case GameState.Gameplay:
                 // Enter Gameplay

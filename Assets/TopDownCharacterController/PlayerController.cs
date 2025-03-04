@@ -1,4 +1,5 @@
 using UnityEngine;
+using DG.Tweening;
 
 
 public class PlayerController : MonoBehaviour
@@ -14,10 +15,20 @@ public class PlayerController : MonoBehaviour
     [SerializeField] float moveSpeed = 2.0f;
     float newSpeed;
 
+    bool isDashing = false;
     [SerializeField] float dashSpeed = 20.0f;
     float dashDuration = 0.2f;
     float dashTime = 0f;
     Vector2 dashDirection;
+    public float dashTrailDuration = 0.2f; // Duration of the trail effect
+    public float dashTrailFadeDuration = 0.1f; // Fade out duration of the trail
+    public int dashTrailSegments = 10; // Number of segments in the trail
+    public float dashRotationAmount = 45f; // Amount of rotation during dash
+    public Ease dashEase = Ease.OutQuad; // Ease for the movement
+    public Ease rotationEase = Ease.OutBack; // Ease for the rotation
+    public Ease scaleEase = Ease.OutBack; // Ease for the scale
+
+    bool isFacingRight = true;
 
     Camera mainCamera;
     Animator animator;
@@ -47,13 +58,64 @@ public class PlayerController : MonoBehaviour
         {
             newSpeed = moveSpeed;
         }
+        Flip();
     }
 
     void Dash()
     {
+        isDashing = true;
+        GameManager.instance.audioManager.PlayOneShot(GameManager.instance.audioManager.dashSound);
         dashTime = dashDuration;
         dashDirection = lastMoveVector;
         newSpeed = dashSpeed;
+        // Do a cool dash effect with dotween to create illusion of speed.
+        transform.DOMove(transform.position + (Vector3)dashDirection, dashDuration / 2).SetEase(dashEase);
+        transform.DORotate(new Vector3(0, 0, transform.eulerAngles.z + (dashDirection.x > 0 ? -dashRotationAmount : dashRotationAmount)), dashDuration, RotateMode.FastBeyond360)
+            .SetEase(rotationEase)
+            .OnComplete(() =>
+            {
+                transform.DORotate(new Vector3(0, 0, 0), dashDuration * 0.7f).SetEase(rotationEase); // Return to original rotation smoothly after dash.
+                isDashing = false;
+            });
+        transform.DOPunchScale(new Vector3(0.2f, 0.2f, 0.2f), dashDuration, 10, 1).SetEase(scaleEase);
+        CreateDashTrail();
+    }
+
+    void CreateDashTrail()
+    {
+        for (int i = 0; i < dashTrailSegments; i++)
+        {
+            GameObject trailSegment = new GameObject("DashTrailSegment");
+            SpriteRenderer trailRenderer = trailSegment.AddComponent<SpriteRenderer>();
+            SpriteRenderer playerRenderer = GetComponentInChildren<SpriteRenderer>();
+            trailRenderer.sprite = playerRenderer.sprite; // Copy the sprite
+
+            // Position and scale the trail segment
+            float segmentProgress = (float)i / dashTrailSegments;
+            // Adjust the distance and scale
+            Vector3 trailPosition = transform.position - (Vector3)(dashDirection * dashSpeed * dashDuration * segmentProgress / dashTrailSegments);
+            trailSegment.transform.position = trailPosition;
+            trailSegment.transform.localScale = transform.localScale * (1f - segmentProgress * 0.05f); // Larger and less scaling
+
+            // Flip the trail segment's sprite to match the player's facing direction
+            if (playerRenderer.flipX)
+            {
+                trailRenderer.flipX = true;
+            }
+            else
+            {
+                trailRenderer.flipX = false;
+            }
+
+            // Fade out the trail
+            Color startColor = trailRenderer.color;
+            startColor.a = 1f;
+            trailRenderer.color = startColor;
+
+            trailRenderer.DOFade(0f, dashTrailFadeDuration)
+                .SetDelay(dashTrailDuration * segmentProgress)
+                .OnComplete(() => Destroy(trailSegment));
+        }
     }
 
     void MovePlayer()
@@ -117,6 +179,16 @@ public class PlayerController : MonoBehaviour
         {
             // Reset the player position.
             Actions.NextWave?.Invoke();
+        }
+    }
+
+    private void Flip()
+    {
+        if (isDashing) return;
+        if (!isFacingRight && moveVector.x > 0 || isFacingRight && moveVector.x < 0)
+        {
+            isFacingRight = !isFacingRight;
+            transform.localScale = new Vector3(transform.localScale.x * -1, transform.localScale.y, transform.localScale.z);
         }
     }
 }

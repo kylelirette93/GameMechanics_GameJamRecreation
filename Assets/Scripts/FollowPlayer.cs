@@ -6,15 +6,22 @@ public class FollowPlayer : MonoBehaviour
 {
     float followSpeed = 1f;
     Transform player;
+    Animator animator;
+    bool isMoving = false;
 
     private void Start()
     {
         player = GameObject.Find("Player").transform;
+        animator = GetComponentInChildren<Animator>();
+        animator.SetLayerWeight(0, 1f);  // Base layer (movement)
+        animator.SetLayerWeight(1, 1f);  // Second layer (e.g., attack, idle, etc.)
     }
     private void Update()
     {
-        Vector3 direction = (player.position - transform.position).normalized;
+        isMoving = ((player.position - transform.position).normalized.sqrMagnitude > 0); // One-liner to check if moving
+        animator.SetBool("isMoving", isMoving);
 
-        transform.position += direction * followSpeed * Time.deltaTime;
+        // Move the object
+        transform.position += (player.position - transform.position).normalized * followSpeed * Time.deltaTime;
     }
 }

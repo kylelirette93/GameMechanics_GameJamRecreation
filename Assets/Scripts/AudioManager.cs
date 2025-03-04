@@ -4,14 +4,12 @@ using UnityEngine;
 
 public class AudioManager : MonoBehaviour
 {
-    private AudioSource audioSource;
+    public AudioSource audioSource;
+    public AudioSource effectSource;
     public AudioClip gameplayMusic;
     public AudioClip impact;
-
-    private void Start()
-    {
-        audioSource = GetComponent<AudioSource>();
-    }
+    public AudioClip bossMusic;
+    public AudioClip dashSound;
 
     public void PlayAudio(AudioClip clip)
     {
@@ -22,6 +20,15 @@ public class AudioManager : MonoBehaviour
 
     public void PlayOneShot(AudioClip clip)
     {
-        audioSource.PlayOneShot(clip);
+        if (clip == dashSound)
+        {
+            // Do a random pitch only for dash.
+            effectSource.pitch = Random.Range(0.8f, 1.2f);          
+        }
+        else
+        {
+            effectSource.pitch = 1;
+        }
+        effectSource.PlayOneShot(clip);
     }
 }
