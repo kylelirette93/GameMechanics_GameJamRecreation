@@ -13,8 +13,6 @@ public class FollowPlayer : MonoBehaviour
     {
         player = GameObject.Find("Player").transform;
         animator = GetComponentInChildren<Animator>();
-        animator.SetLayerWeight(0, 1f);  // Base layer (movement)
-        animator.SetLayerWeight(1, 1f);  // Second layer (e.g., attack, idle, etc.)
     }
     private void Update()
     {

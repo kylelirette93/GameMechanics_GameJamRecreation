@@ -104,6 +104,7 @@ public class GameStateManager : MonoBehaviour
                 break;
             case GameState.Boss:
                 // Enter Boss state
+                Destroy(GameObject.Find("Goal"));
                 GameManager.instance.audioManager.PlayAudio(GameManager.instance.audioManager.bossMusic);
                 break;
             case GameState.Gameplay:

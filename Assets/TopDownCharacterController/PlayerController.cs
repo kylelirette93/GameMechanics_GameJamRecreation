@@ -4,44 +4,44 @@ using DG.Tweening;
 
 public class PlayerController : MonoBehaviour
 {
-    // Reference to rigidbody component.
+    // References and variables.
     Rigidbody2D rb2D;
-
-    // Initialize input vector.
-    Vector2 moveVector;
-    Vector2 lastMoveVector;
-
-    // Movement speed of the player.
-    [SerializeField] float moveSpeed = 2.0f;
-    float newSpeed;
-
-    bool isDashing = false;
-    [SerializeField] float dashSpeed = 20.0f;
-    float dashDuration = 0.2f;
-    float dashTime = 0f;
-    Vector2 dashDirection;
-    public float dashTrailDuration = 0.2f; // Duration of the trail effect
-    public float dashTrailFadeDuration = 0.1f; // Fade out duration of the trail
-    public int dashTrailSegments = 10; // Number of segments in the trail
-    public float dashRotationAmount = 45f; // Amount of rotation during dash
-    public Ease dashEase = Ease.OutQuad; // Ease for the movement
-    public Ease rotationEase = Ease.OutBack; // Ease for the rotation
-    public Ease scaleEase = Ease.OutBack; // Ease for the scale
-
-    bool isFacingRight = true;
-
     Camera mainCamera;
     Animator animator;
     ParticleSystem particleSystem;
+    Vector2 moveVector;
+    Vector2 lastMoveVector;
+    bool isFacingRight = true;
+
+    // Movement speed of the player.
+    [Header("Movement Settings")]
+    [SerializeField] float moveSpeed = 2.0f;
+    [SerializeField] float newSpeed;
+
+    [Header("Dash Settings")]
+    [SerializeField] bool isDashing = false;
+    [SerializeField] Vector2 dashDirection;
+    [SerializeField] float dashSpeed = 20.0f;
+    [SerializeField] float dashDuration = 0.2f;
+    [SerializeField] float dashTime = 0f;
+    [SerializeField] float dashTrailDuration = 0.2f; // Duration of the trail effect
+    [SerializeField] float dashTrailFadeDuration = 0.1f; // Fade out duration of the trail
+    [SerializeField] int dashTrailSegments = 10; // Number of segments in the trail
+    [SerializeField] float dashRotationAmount = 45f; // Amount of rotation during dash
+    [SerializeField] Ease dashEase = Ease.OutQuad; // Ease for the movement
+    [SerializeField] Ease rotationEase = Ease.OutBack; // Ease for the rotation
+    [SerializeField] Ease scaleEase = Ease.OutBack; // Ease for the scale
+
 
     private void Awake()
     {
+        // Get references.
         rb2D = GetComponent<Rigidbody2D>();
         mainCamera = Camera.main;
         animator = GetComponentInChildren<Animator>();
         particleSystem = GetComponentInChildren<ParticleSystem>();
 
-        // Subscribe to the move event.
+        // Subscribe to the events.
         Actions.MoveEvent += GetInputVector;
         Actions.DashEvent += Dash;
     }

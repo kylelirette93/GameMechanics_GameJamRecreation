@@ -106,6 +106,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: BossCat
       objectReference: {fileID: 0}
+    - target: {fileID: 1920424400043950139, guid: 7e98c4a401b95c4498ebbe05eecfe43f, type: 3}
+      propertyPath: m_TagString
+      value: Boss
+      objectReference: {fileID: 0}
     - target: {fileID: 3629268620438510007, guid: 7e98c4a401b95c4498ebbe05eecfe43f, type: 3}
       propertyPath: m_LocalPosition.x
       value: 2.340286
@@ -146,7 +150,8 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 5825976709239625086, guid: 7e98c4a401b95c4498ebbe05eecfe43f, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 3629268620438510007, guid: 7e98c4a401b95c4498ebbe05eecfe43f, type: 3}
@@ -292,3 +297,4 @@ MonoBehaviour:
   leftEyeTransform: {fileID: 7536917273127383205}
   rightEyeTransform: {fileID: 4950309119189881217}
   laserPrefab: {fileID: 5852293686752018134, guid: 7c2071ede655b454dbbe26c655b11b6a, type: 3}
+  bossTargetPickupPrefab: {fileID: 6586804035168841684, guid: dd45c8e93d2181d4898a580b4559a22e, type: 3}

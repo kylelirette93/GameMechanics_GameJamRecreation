@@ -12,12 +12,17 @@ public class AdvanceAIController : MonoBehaviour
     float laserDuration = 0.5f;
     Animator animator;
     private bool isFiring = false;
+    public GameObject bossTargetPickupPrefab;
+    float pickupDelay = 5f;
+    int maxPickups = 5;
+    int pickupsSpawned = 0;
 
     private void Start()
     {
         animator = GetComponent<Animator>();
         playerTransform = GameObject.FindGameObjectWithTag("Player").transform;
         StartCoroutine(LaserRoutine());
+        StartCoroutine(SpawnPickup());
     }
 
     IEnumerator LaserRoutine()
@@ -59,5 +64,15 @@ public class AdvanceAIController : MonoBehaviour
 
         // Optionally destroy the laser after some time to avoid memory issues
         Destroy(laser, 2f);  // Destroy after 2 seconds
+    }
+
+    IEnumerator SpawnPickup()
+    {
+        while (pickupsSpawned < maxPickups)
+        {
+            yield return new WaitForSeconds(pickupDelay);
+            GameObject pickupInstance = GameObject.Instantiate(bossTargetPickupPrefab, transform.position, transform.rotation);
+            pickupsSpawned++;
+        }
     }
 }
