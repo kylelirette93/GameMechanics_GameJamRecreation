@@ -5,10 +5,17 @@ public class BossHealthController : MonoBehaviour
 {
     public int Health { get; private set; } = 7;
     Vector3 endRotation = new Vector3(90, 0, 0);
+    ParticleSystem particleSystem;
+
+    private void Start()
+    {
+        particleSystem = GetComponentInChildren<ParticleSystem>();
+    }
 
     void LoseHealth()
     {
         GameManager.instance.audioManager.PlayOneShot(GameManager.instance.audioManager.impact);
+        particleSystem.Play();
         transform.DOPunchRotation(endRotation, 0.5f, 10, 1f)
             .OnComplete(() =>
             {
