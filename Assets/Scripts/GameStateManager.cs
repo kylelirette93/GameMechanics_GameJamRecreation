@@ -16,6 +16,7 @@ public class GameStateManager : MonoBehaviour
     public GameObject winPanel;
     public GameObject gameOverPanel;
     GameObject goal;
+    GameObject player;
     public enum GameState
     {
         MainMenu,
@@ -34,6 +35,7 @@ public class GameStateManager : MonoBehaviour
     {
         ChangeState(GameState.MainMenu);
         goal = GameObject.Find("Goal");
+        player = GameObject.Find("Player");
     }
 
     public void ChangeState(GameState newState)
@@ -49,6 +51,7 @@ public class GameStateManager : MonoBehaviour
         if (currentState == GameState.MainMenu && Input.GetKeyDown(KeyCode.X))
         {
             // Reset waves and lives when starting a new game.
+            player.SetActive(true);
             SpawnManager.Reset();
             PlayerController.Lives = 9;
             ChangeState(GameState.Controls);
@@ -112,7 +115,7 @@ public class GameStateManager : MonoBehaviour
                 break;
             case GameState.Boss:
                 break;
-                case GameState.GameOver:               
+            case GameState.GameOver:               
                 // Exit GameOver
                 gameOverPanel.SetActive(false);
                 break;
@@ -157,7 +160,7 @@ public class GameStateManager : MonoBehaviour
                 gameplayPanel.SetActive(false);
                 winPanel.SetActive(true);
                 GameManager.instance.audioManager.StopAudio();
-                Time.timeScale = 0;
+                Time.timeScale = 1;
                 break;
             case GameState.GameOver:
                 // Enter GameOver
@@ -166,6 +169,7 @@ public class GameStateManager : MonoBehaviour
                 gameplayPanel.SetActive(false);
                 gameOverPanel.SetActive(true);
                 GameManager.instance.audioManager.StopAudio();
+                player.SetActive(false);
                 Time.timeScale = 0;
                 break;
         }

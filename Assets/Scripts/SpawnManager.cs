@@ -80,6 +80,13 @@ public class SpawnManager : MonoBehaviour
         {
             Destroy(projectile);
         }
+
+        // Destroy leftover lasers from wave.
+        GameObject[] lasers = GameObject.FindGameObjectsWithTag("Laser");
+        foreach (GameObject laser in lasers)
+        {
+            Destroy(laser);
+        }
     }
 
     IEnumerator ResetPlayerCoroutine()

@@ -4,6 +4,7 @@ using UnityEngine;
 public class DisplayWinText : MonoBehaviour
 {
     TextMeshProUGUI winText;
+    PlayerController playerController;
 
     void Start()
     {
