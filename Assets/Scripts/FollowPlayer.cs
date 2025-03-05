@@ -14,7 +14,7 @@ public class FollowPlayer : MonoBehaviour
     private void Update()
     {
         if (player != null)
-        {        // Move the object
+        {        
             transform.position += (player.position - transform.position).normalized * followSpeed * Time.deltaTime;
         }
     }

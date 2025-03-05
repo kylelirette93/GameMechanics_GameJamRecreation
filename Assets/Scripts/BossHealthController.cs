@@ -16,6 +16,7 @@ public class BossHealthController : MonoBehaviour
     {
         GameManager.instance.audioManager.PlayOneShot(GameManager.instance.audioManager.impact);
         particleSystem.Play();
+        // Do an elastic rotation for visual feedback when boss takes a hit.
         transform.DOPunchRotation(endRotation, 0.5f, 10, 1f)
             .OnComplete(() =>
             {
@@ -31,7 +32,7 @@ public class BossHealthController : MonoBehaviour
 
     void Die()
     {
-        // Game over state.
+        // Game over state, destroy the boss and change state.
         GameManager.instance.gameStateManager.ChangeState(GameStateManager.GameState.GameWin);
         Destroy(transform.parent.gameObject);
     }

@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class AnimatorChangeFeedback : MonoBehaviour
 {
+    // Feedback for if the player has collided with a saw, it turns redish.
     Animator animator;
     TrailRenderer trailRenderer;
 

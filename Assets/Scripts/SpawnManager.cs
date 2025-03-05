@@ -20,13 +20,14 @@ public class SpawnManager : MonoBehaviour
     private void OnEnable()
     {
         originalRotation = transform.rotation;
+        // Subscribe to events.
         Actions.ResetPlayer += ResetPlayer;
         Actions.NextWave += NextWave;
     }
 
     void NextWave()
     {
-        // Start the next wave.
+        // Start the next wave. To be called from goal trigger.
         StartCoroutine(HandleNextWave());
     }
 
@@ -35,6 +36,7 @@ public class SpawnManager : MonoBehaviour
         if (GameManager.instance.gameStateManager.currentState == GameStateManager.GameState.GameWin ||
             GameManager.instance.gameStateManager.currentState == GameStateManager.GameState.GameOver)
         {
+            // If game over or win state, destroy the current wave.
             Destroy(waveInstance);
         }
     }
@@ -72,7 +74,7 @@ public class SpawnManager : MonoBehaviour
 
     private void DestroyLeftovers()
     {
-        // Destroy leftover projectiles.
+        // Destroy leftover projectiles from wave.
         GameObject[] projectiles = GameObject.FindGameObjectsWithTag("Projectile");
         foreach (GameObject projectile in projectiles)
         {
@@ -82,8 +84,8 @@ public class SpawnManager : MonoBehaviour
 
     IEnumerator ResetPlayerCoroutine()
     {
+        // Reset the player if they hit a buzzsaw.
         isResetting = true;
-        // Reset player if they hit a buzzsaw.
         player.transform.DOMove(spawnPoint.position, tweenFactor);
         yield return player.transform.DOShakeRotation(tweenFactor).WaitForCompletion();
         player.transform.rotation = originalRotation;
@@ -92,7 +94,6 @@ public class SpawnManager : MonoBehaviour
 
     public void ResetPlayer()
     {
-        // Reset player if they hit a buzzsaw.
         StartCoroutine(ResetPlayerCoroutine());
     }
 }

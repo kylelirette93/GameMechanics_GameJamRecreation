@@ -6,6 +6,8 @@ public class AudioManager : MonoBehaviour
 {
     public AudioSource audioSource;
     public AudioSource effectSource;
+
+    // References to music and various SFX clips.
     public AudioClip gameplayMusic;
     public AudioClip impact;
     public AudioClip bossMusic;
@@ -13,6 +15,7 @@ public class AudioManager : MonoBehaviour
 
     public void PlayAudio(AudioClip clip)
     {
+        // For playing music.
         audioSource.clip = clip;
         audioSource.loop = true;
         audioSource.Play();      

@@ -5,7 +5,7 @@ public class BossProjectileController : MonoBehaviour
     GameObject bossCat;
     string bossTag = "Boss";
     public float projectileSpeed = 50f;
-    public float acceleration = 10f; // Higher acceleration for better homing
+    public float acceleration = 10f; 
     private Rigidbody2D rb;
     private bool isFollowingBoss = false;
 
@@ -21,14 +21,14 @@ public class BossProjectileController : MonoBehaviour
         {
             Vector2 direction = (bossCat.transform.position - transform.position).normalized;
 
-            // Increase speed over time (optional)
+            // Increase speed of projectile over time for homing effect using acceleration.
             projectileSpeed += acceleration * Time.fixedDeltaTime;
 
-            // Set velocity directly toward the boss
             rb.velocity = direction * projectileSpeed;
         }
         else if (isFollowingBoss && bossCat == null)
         {
+            // If the boss is destroyed, destroy the projectile.
             Destroy(gameObject);
         }
     }
@@ -41,7 +41,8 @@ public class BossProjectileController : MonoBehaviour
         }
         else if (other.gameObject == bossCat && isFollowingBoss)
         {
-            Destroy(gameObject); // Destroy on collision with boss
+            // Destroy projectile when it hits the boss.
+            Destroy(gameObject); 
         }
     }
 

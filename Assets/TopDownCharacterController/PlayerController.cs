@@ -27,13 +27,13 @@ public class PlayerController : MonoBehaviour
     [SerializeField] float dashSpeed = 20.0f;
     [SerializeField] float dashDuration = 0.2f;
     [SerializeField] float dashTime = 0f;
-    [SerializeField] float dashTrailDuration = 0.2f; // Duration of the trail effect
-    [SerializeField] float dashTrailFadeDuration = 0.1f; // Fade out duration of the trail
-    [SerializeField] int dashTrailSegments = 10; // Number of segments in the trail
-    [SerializeField] float dashRotationAmount = 45f; // Amount of rotation during dash
-    [SerializeField] Ease dashEase = Ease.OutQuad; // Ease for the movement
-    [SerializeField] Ease rotationEase = Ease.OutBack; // Ease for the rotation
-    [SerializeField] Ease scaleEase = Ease.OutBack; // Ease for the scale
+    [SerializeField] float dashTrailDuration = 0.2f; 
+    [SerializeField] float dashTrailFadeDuration = 0.1f; 
+    [SerializeField] int dashTrailSegments = 10; 
+    [SerializeField] float dashRotationAmount = 45f; 
+    [SerializeField] Ease dashEase = Ease.OutQuad; 
+    [SerializeField] Ease rotationEase = Ease.OutBack; 
+    [SerializeField] Ease scaleEase = Ease.OutBack;
 
 
     private void Awake()
@@ -52,6 +52,7 @@ public class PlayerController : MonoBehaviour
 
     private void FixedUpdate()
     {
+        // Handle movement in fixed update for physics calculations.
         MovePlayer();
     }
 
@@ -64,6 +65,7 @@ public class PlayerController : MonoBehaviour
         }
         if (moveVector != Vector2.zero)
         {
+            // Only handle flip if player is moving.
             Flip();
         }
     }
@@ -75,8 +77,10 @@ public class PlayerController : MonoBehaviour
         dashTime = dashDuration;
         dashDirection = lastMoveVector;
         newSpeed = dashSpeed;
-        // Do a cool dash effect with dotween to create illusion of speed.
+
+        // Dash movement, rotation, and scale.
         transform.DOMove(transform.position + (Vector3)dashDirection, dashDuration / 2).SetEase(dashEase);
+        // Rotate the player in the direction of the dash, then return to original rotation.
         transform.DORotate(new Vector3(0, 0, transform.eulerAngles.z + (dashDirection.x > 0 ? -dashRotationAmount : dashRotationAmount)), dashDuration, RotateMode.FastBeyond360)
             .SetEase(rotationEase)
             .OnComplete(() =>
@@ -84,27 +88,36 @@ public class PlayerController : MonoBehaviour
                 transform.DORotate(new Vector3(0, 0, 0), dashDuration * 0.7f).SetEase(rotationEase); // Return to original rotation smoothly after dash.
                 isDashing = false;
             });
+        // Scale the player up and down during the dash.
         transform.DOPunchScale(new Vector3(0.2f, 0.2f, 0.2f), dashDuration, 10, 1).SetEase(scaleEase);
+
         CreateDashTrail();
     }
 
     void CreateDashTrail()
     {
+        // This was a pain in the butt... U.U but it works.
         for (int i = 0; i < dashTrailSegments; i++)
         {
+            // Create a new trail segment. 
             GameObject trailSegment = new GameObject("DashTrailSegment");
+            // Add a sprite renderer to the trail segment and copy the player's sprite.
             SpriteRenderer trailRenderer = trailSegment.AddComponent<SpriteRenderer>();
             SpriteRenderer playerRenderer = GetComponentInChildren<SpriteRenderer>();
-            trailRenderer.sprite = playerRenderer.sprite; // Copy the sprite
+            trailRenderer.sprite = playerRenderer.sprite; 
 
-            // Position and scale the trail segment
+            // Set the segment progress based on the current iteration.
             float segmentProgress = (float)i / dashTrailSegments;
-            // Adjust the distance and scale
+            // Set the trail segment's sorting order to be behind the player.
             Vector3 trailPosition = transform.position - (Vector3)(dashDirection * dashSpeed * dashDuration * segmentProgress / dashTrailSegments);
-            trailSegment.transform.position = trailPosition;
-            trailSegment.transform.localScale = transform.localScale * (1f - segmentProgress * 0.05f); // Larger and less scaling
 
-            // Flip the trail segment's sprite to match the player's facing direction
+            // Set the segment's position to be behind the player.
+            trailSegment.transform.position = trailPosition;
+
+            // Set the segment's scale to be slightly smaller than the player's scale.
+            trailSegment.transform.localScale = transform.localScale * (1f - segmentProgress * 0.05f);
+
+            // Flip the trail segment's sprite to match the player's facing direction.
             if (playerRenderer.flipX)
             {
                 trailRenderer.flipX = true;
@@ -114,7 +127,7 @@ public class PlayerController : MonoBehaviour
                 trailRenderer.flipX = false;
             }
 
-            // Fade out the trail
+            // Fade out the segment over time and than destroy it.
             Color startColor = trailRenderer.color;
             startColor.a = 1f;
             trailRenderer.color = startColor;
@@ -130,7 +143,7 @@ public class PlayerController : MonoBehaviour
         animator.SetBool("IsMoving", moveVector != Vector2.zero);
         animator.speed = (moveVector != Vector2.zero) ? 1 : 0;
         Vector2 newPosition = rb2D.position + moveVector * newSpeed * Time.deltaTime;
-        newPosition = ClampPositionToCameraBounds(newPosition); // Clamp position
+        newPosition = ClampPositionToCameraBounds(newPosition); 
         rb2D.MovePosition(newPosition);
     }
 
@@ -138,20 +151,20 @@ public class PlayerController : MonoBehaviour
     {
         if (mainCamera == null) return position;
 
-        // Define an offset (margin) to keep the player slightly inside the screen
-        float offset = 0.3f; // Adjust this value as needed
+        // Offset to keep player sprite inside the camera view.
+        float offset = 0.3f; 
 
-        // Get camera world boundaries
+        // Get the camera bounds.
         Vector3 minBounds = mainCamera.ViewportToWorldPoint(new Vector3(0, 0, 0));
         Vector3 maxBounds = mainCamera.ViewportToWorldPoint(new Vector3(1, 1, 0));
 
-        // Apply offset
+        // Apply offset.
         minBounds.x += offset;
         minBounds.y += offset;
         maxBounds.x -= offset;
         maxBounds.y -= offset;
 
-        // Clamp position with offset
+        // Clamp position with offset.
         position.x = Mathf.Clamp(position.x, minBounds.x, maxBounds.x);
         position.y = Mathf.Clamp(position.y, minBounds.y, maxBounds.y);
 
@@ -175,6 +188,7 @@ public class PlayerController : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
+        // Check for collisions unless player is dashing or resetting.
         if (collision.gameObject.CompareTag("Buzzsaw") && !isDashing && spawnManager.IsResetting == false)
         {
             if (GameManager.instance.gameStateManager.currentState == GameStateManager.GameState.Gameplay || 
@@ -182,7 +196,6 @@ public class PlayerController : MonoBehaviour
             {
                 GameManager.instance.audioManager.PlayOneShot(GameManager.instance.audioManager.impact);
                 particleSystem.Play();
-                // Reset the player position.
                 Actions.ResetPlayer?.Invoke();
                 LoseLife();
                 UpdatePlayerLives();
@@ -193,7 +206,6 @@ public class PlayerController : MonoBehaviour
 
                 GameManager.instance.audioManager.PlayOneShot(GameManager.instance.audioManager.impact);
                 particleSystem.Play();
-                // Reset the player position.
                 Actions.ResetPlayer?.Invoke();
             }
         }
@@ -212,7 +224,7 @@ public class PlayerController : MonoBehaviour
         }
         else if (collision.gameObject.CompareTag("Goal"))
         {
-            // Reset the player position.
+            // Reset the player position if they reach the goal.
             Actions.NextWave?.Invoke();
         }
     }
@@ -235,6 +247,7 @@ public class PlayerController : MonoBehaviour
 
     private void Flip()
     {
+        // Check for movement direction and flip the player sprite accordingly.
         if (isDashing) return;
         if (moveVector.x > 0 && !isFacingRight)
         {

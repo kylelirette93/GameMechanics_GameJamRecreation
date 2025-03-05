@@ -21,6 +21,7 @@ public class LivesUI : MonoBehaviour
 
     public void UpdateLives()
     {
+        // Update text based on player lives.
         if (playerController != null)
         {
             livesText.text = "Lives: " + playerController.Lives;

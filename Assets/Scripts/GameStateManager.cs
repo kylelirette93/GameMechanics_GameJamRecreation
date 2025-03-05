@@ -8,6 +8,7 @@ public class GameStateManager : MonoBehaviour
     public PlayerController PlayerController;
     public SpawnManager SpawnManager;
 
+    // UI Panels for various states.
     public GameObject menuPanel;
     public GameObject controlsPanel;
     public GameObject tutorialPanel;
@@ -47,6 +48,7 @@ public class GameStateManager : MonoBehaviour
     {
         if (currentState == GameState.MainMenu && Input.GetKeyDown(KeyCode.X))
         {
+            // Reset waves and lives when starting a new game.
             SpawnManager.Reset();
             PlayerController.Lives = 9;
             ChangeState(GameState.Controls);
@@ -87,6 +89,7 @@ public class GameStateManager : MonoBehaviour
 
     private void ExitState(GameState state)
     {
+        // Deactivate UI when exiting that state.
         previousState = state;
         switch (state)
         {
@@ -118,6 +121,7 @@ public class GameStateManager : MonoBehaviour
 
     private void EnterState(GameState state)
     {
+        // Active UI when entering that state.
         switch (state)
         {
             case GameState.MainMenu:
@@ -134,19 +138,21 @@ public class GameStateManager : MonoBehaviour
             case GameState.Tutorial:
                 tutorialPanel.SetActive(true);
                 GameManager.instance.audioManager.PlayAudio(GameManager.instance.audioManager.gameplayMusic);
+                // Start timer when entering tutorial level.
                 Timer.instance.StartTimer();
+                break;
+            case GameState.Gameplay:
+                // Enter Gameplay
+                gameplayPanel.SetActive(true);
                 break;
             case GameState.Boss:
                 // Enter Boss state
                 goal.SetActive(false);
                 GameManager.instance.audioManager.PlayAudio(GameManager.instance.audioManager.bossMusic);
                 break;
-            case GameState.Gameplay:
-                // Enter Gameplay
-                gameplayPanel.SetActive(true);
-                break;
             case GameState.GameWin:
                 // Enter Game win state.
+                // Stop timer before displaying win panel.
                 Timer.instance.StopTimer();
                 gameplayPanel.SetActive(false);
                 winPanel.SetActive(true);
@@ -155,6 +161,7 @@ public class GameStateManager : MonoBehaviour
                 break;
             case GameState.GameOver:
                 // Enter GameOver
+                // Reset timer if game over.
                 Timer.instance.ResetTime();
                 gameplayPanel.SetActive(false);
                 gameOverPanel.SetActive(true);
